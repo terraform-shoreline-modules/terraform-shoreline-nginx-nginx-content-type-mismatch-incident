@@ -1,0 +1,110 @@
+{
+  "name": "nginx_content_type_mismatch_incident",
+  "description": "The Nginx Content-Type Mismatch Incident refers to a situation in which the Content-Type header mismatches, which can affect the rendering of content in web browsers. This incident can lead to unexpected rendering or display issues on websites or web applications. To prevent mismatches, it is important to ensure that the Content-Type header is correctly set for web resources.",
+  "params": [
+    {
+      "name": "PATH_TO_SERVER_CONFIGURATION_FILE",
+      "value": ""
+    },
+    {
+      "name": "URL",
+      "value": ""
+    },
+    {
+      "name": "CORRECT_CONTENT_TYPE",
+      "value": ""
+    },
+    {
+      "name": "HOST_NAME",
+      "value": ""
+    },
+    {
+      "name": "K8S_CLUSTER_NAME",
+      "value": ""
+    },
+    {
+      "name": "NAMESPACE",
+      "value": ""
+    }
+  ],
+  "cells": [
+    {
+      "name": "cell_1",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Nginx Content-Type Mismatch Incident\nThe Nginx Content-Type Mismatch Incident refers to a situation in which the Content-Type header mismatches, which can affect the rendering of content in web browsers. This incident can lead to unexpected rendering or display issues on websites or web applications. To prevent mismatches, it is important to ensure that the Content-Type header is correctly set for web resources."
+    },
+    {
+      "name": "cell_2",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check the Nginx configuration file for any misconfigurations"
+    },
+    {
+      "name": "cell_3",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `sudo nginx -t`"
+    },
+    {
+      "name": "cell_4",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check the response headers of a web resource to verify the Content-Type header"
+    },
+    {
+      "name": "cell_5",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `curl -I ${URL}`"
+    },
+    {
+      "name": "cell_6",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check the server logs for any errors related to the Content-Type header"
+    },
+    {
+      "name": "cell_7",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `sudo tail -f /var/log/nginx/access.log | grep 'content-type'`"
+    },
+    {
+      "name": "cell_8",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check the server logs for any errors related to the Nginx configuration"
+    },
+    {
+      "name": "cell_9",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `sudo tail -f /var/log/nginx/error.log | grep 'content-type'`"
+    },
+    {
+      "name": "cell_10",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Check the Nginx version to ensure it is up-to-date"
+    },
+    {
+      "name": "cell_11",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "(host | host_name=$HOST_NAME) union (pod | k8s_cluster_name=$K8S_CLUSTER_NAME | namespace=$NAMESPACE) | `nginx -v`"
+    },
+    {
+      "name": "cell_12",
+      "type": "MARKDOWN",
+      "enabled": true,
+      "content": "## Update the server configuration: If the Content-Type header is not set correctly, update the server configuration to ensure that the header is set correctly for all web resources."
+    },
+    {
+      "name": "cell_13",
+      "type": "OP_LANG",
+      "enabled": true,
+      "content": "host | host_name=$HOST_NAME | invoke_set_content_type($PATH_TO_SERVER_CONFIGURATION_FILE, $CORRECT_CONTENT_TYPE)"
+    }
+  ]
+}
